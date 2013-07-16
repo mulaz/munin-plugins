@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use Data::Dumper;
-use LWP::Simple;
+#use LWP::Simple; problems with certs, used curl instead, .. yeah yeah, fugly hack yeah
 use JSON qw( decode_json );
 
 if ($ARGV[0] && $ARGV[0] eq "config") {
