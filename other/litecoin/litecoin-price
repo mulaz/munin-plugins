@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use Data::Dumper;
+use LWP::Simple;
+use JSON qw( decode_json );
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+print "host_name ltc
+graph_title LTC-USD e-btc
+graph_vtitle USD
+graph_args --base 1000 -l 0
+avg.label Avg
+high.label High
+low.label Low
+";
+
+  exit;
+}
+$json=`curl https://btc-e.com/api/2/ltc_usd/ticker 2>/dev/null`;
+
+#print Dumper($json);
+$data = decode_json( $json );
+
+$avg=$data->{ticker}->{avg};
+$high=$data->{ticker}->{high};
+$low=$data->{ticker}->{low};
+$buy=$data->{ticker}->{buy};
+$sell=$data->{ticker}->{sell};
+
+print "avg.value $avg\n";
+print "high.value $high\n";
+print "low.value $low\n";
+print "buy.value $buy\n";
+print "sell.value $sell\n";

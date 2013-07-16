@@ -1,0 +1,4 @@
+*litecoin-price*
+
+perl module for getting avg/high/low/buy/sell litecoin price from btc-e api (in USD)
+uses: LWP::Simple and JSON

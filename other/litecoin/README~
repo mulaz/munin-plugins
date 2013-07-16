@@ -1,0 +1,4 @@
+*bitcoin-price*
+
+perl module for getting avg/high/low/buy/sell price from mtgox api (in USD)
+uses: LWP::Simple and JSON
