@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+use LWP::Simple;
+use Data::Dumper;
+use XML::Simple;
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+print "host_name bicikelj
+graph_title Vilharjeva
+graph_vtitle Number
+graph_args --base 1000 -l 0
+total.label Total
+available.label Available bikes
+free.label Free slots
+ticket.label Ticket
+open.label Open
+";
+
+exit;
+}
+
+
+$xml=get("http://www.bicikelj.si/service/stationdetails/ljubljana/11");
+$data=XMLin($xml);
+
+#print Dumper($data);
+
+print "total.value " . $data->{total} . "\n";
+print "available.value " . $data->{available} . "\n";
+print "free.value " . $data->{free} . "\n";
+print "ticket.value " . $data->{ticket} . "\n";
+print "open.value " . $data->{open} . "\n";
+
