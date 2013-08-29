@@ -8,4 +8,4 @@ for rate limiting, saves the xml to /tmp and updates it every 20 minutes
 just change the msisdn:password combo (around L61), and it should work
 
 
-for other itak packages change the warning/critical limits by hand, and hand-check if the xml is ok
+for other itak packages change the warning/critical limits by hand, and hand-check if the xml is the same for itak2000
