@@ -1,0 +1,85 @@
+#!/usr/bin/perl
+
+use XML::Simple;
+use Data::Dumper;
+use DateTime;
+
+
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+print "host_name mobitel
+multigraph zakupljene3k
+graph_title Porabljene enote
+graph_vtitle Enote
+graph_scale no
+graph_args --base 1000 -l 0 -u 3500 --units-exponent 0
+poraba3k.label Porabljene enote Itak3000
+poraba3k.warning 2500
+poraba3k.critical 2900
+
+
+multigraph porabaeur
+graph_title Poraba EUR
+graph_vtitle EUR
+graph_args --base 1000 -l 0
+porabaeur.label Poraba
+
+multigraph moneta
+graph_title Moneta
+graph_vtitle EUR
+graph_args --base 1000 -l 0
+moneta.label Moneta
+";
+exit;
+
+}
+
+
+$filename="/tmp/mobitelporaba.xml";
+
+
+
+
+$dt=DateTime->now();
+$min= $dt->minute();
+
+if(($min % 20) < 5) {
+    if ( -e $filename) {
+	unlink $filename or die "could not delete file $file \n";
+    }
+}
+
+
+
+
+
+
+
+
+if (! -e $filename) {
+#    print STDERR "downloadam xml\n";
+    `curl -k -u MSISDN:PASSWORD -A "Mozilla/4.0" https://m-vrata.mobitel.si/android/monitorinfo/infoxml.ashx > /tmp/mobitelporaba.xml 2>/dev/null`;
+}
+
+
+
+
+    $data=XMLin($filename);
+
+
+
+    
+#print Dumper($data);
+    
+    $poraba3k=$data->{Quotas}->{Quota}->{Used};
+    print "multigraph zakupljene3k\n";
+    print "poraba3k.value $poraba3k \n";
+    
+    $porabaeur=$data->{Poraba}->{content};
+    print "multigraph porabaeur\n";
+    print "porabaeur.value $porabaeur\n";
+    
+    $moneta=$data->{Moneta}->{content};
+    print "multigraph moneta\n";
+    print "moneta.value $moneta\n";
+    

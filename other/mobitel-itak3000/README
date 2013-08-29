@@ -1,0 +1,11 @@
+Monitors mobitel(.si) poraba api, and draws poraba, moneta and itak3000 data.
+
+for rate limiting, saves the xml to /tmp and updates it every 20 minutes
+
+...really badly written, use at your own risk...
+
+
+just change the msisdn:password combo (around L61), and it should work
+
+
+for other itak packages change the warning/critical limits by hand, and hand-check if the xml is ok
