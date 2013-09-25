@@ -21,20 +21,6 @@ tweets.label Tweets
   exit;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $data=`curl https://mobile.twitter.com/$username 2>/dev/null`;
 
 #print $data;
