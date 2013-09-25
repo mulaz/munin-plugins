@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+use Data::Dumper;
+
+if($0=~/numberoftweets_(.*)/) {
+$username=$1;
+#print "username $1 \n";
+}
+else {
+     die "you renamed me! you bastard!\n"; }
+
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+print "host_name twitter
+graph_title Tweets for user $username
+graph_vtitle Tweets
+graph_args --base 1000 -l 0
+tweets.label Tweets
+";
+
+  exit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$data=`curl https://mobile.twitter.com/$username 2>/dev/null`;
+
+#print $data;
+
+if($data=~/<table class="profile-stats">
+  <tr>
+    <td class="stat">
+      <div class="statnum">([\d,]+)<\/div>
+      <div class="statlabel">Tweets<\/div>/) {
+
+    $num=$1;
+    $num=~s/,//;
+
+}
+
+
+print "tweets.value $num\n";
