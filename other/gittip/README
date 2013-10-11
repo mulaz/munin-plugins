@@ -1,5 +1,5 @@
-Shows weekly donations for orgnatization/user on gittip.com
+Shows weekly donations for orgnatization/user on www.gittip.com
 
-does web scraping
+does web scraping, uses curl
 
 Just rename to gittip_recieves_Organizationname
