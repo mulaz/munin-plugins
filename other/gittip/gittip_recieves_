@@ -26,8 +26,9 @@ $data=`curl https://www.gittip.com/$username/ 2>/dev/null`;
 
 #print $data;
 
+if($data=~/<div class="number">\n\s*<span class="total-receiving">\$([\d\.,]+)<\/span>/) {
 
-if($data=~/<div class="number">\$<span class="total-receiving">([\d\.,]+)<\/span><\/div>/) {
+
 
     $num=$1;
     $num=~s/,//;
