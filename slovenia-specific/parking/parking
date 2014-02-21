@@ -1,0 +1,108 @@
+#!/usr/bin/perl
+
+use Data::Dumper;
+use XML::Simple;
+use utf8;
+
+$xml=`curl http://www.lpt.si/uploads/xml/traffic/occupancy.xml 2>/dev/null`;
+$occ=XMLin($xml);
+
+#print Dumper($occ);
+
+%free;
+
+foreach(@{$occ->{ZASEDENOST}}) {
+
+#    print Dumper($_);
+    $free{$_->{'ID_ParkiriscaNC'}}=$_->{'P_kratkotrajniki'};
+
+
+}
+
+
+
+
+
+$xmlurl="http://www.lpt.si/uploads/xml/map/parkirisca.xml";
+$xml=`curl $xmlurl 2>/dev/null`;
+
+$data=XMLin($xml);
+
+
+@parkirisca=@{$data->{Parkirisca}};
+
+@out;
+
+%info;
+
+foreach (@parkirisca) {
+
+#    print Dumper($_);
+#    print "\n\n\n";
+    $id=$_->{'ID_ParkiriscaNC'};
+    $name=$_->{'Ime'};
+    $name=~s/\x{17e}/z/g;
+    $name=~s/\x{17d}/Z/g;
+    $name=~s/\x{10d}/c/g;
+
+
+
+
+#    print $name;
+    $total=$_->{'St_mest'};
+#    print $total;
+
+    $info{$id}{name}=$name;
+    $info{$id}{total}=$total;
+    
+
+}
+
+%final;
+
+
+
+#print Dumper(\%free);
+#exit;
+foreach (keys %free) {
+
+    $final{$_}{name}=$info{$_}{name} || next;
+    $final{$_}{total}=$info{$_}{total} || next;
+    $final{$_}{free}=$free{$_} || next;
+
+
+
+}
+
+#print Dumper(\%final);
+
+
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+    print "host_name parking\n";
+
+    foreach (keys %final) {
+	print "multigraph parking".$_."\n";
+	print "graph_title " . $final{$_}{name}."\n";
+	print "graph_vtitle Mesta\n";
+	print "graph_args --base 1000 -l 0\n";
+	print "total".$_.".label Vsa mesta\n";
+	print "free".$_.".label Prosta mesta\n\n";
+
+
+	    
+    }
+
+    exit;
+
+}
+
+
+    foreach (keys %final) {
+	print "multigraph parking".$_."\n";
+	print "total".$_.".value " . $final{$_}{total}."\n";
+	print "free".$_.".value " . $final{$_}{free}."\n";
+
+
+
+}
