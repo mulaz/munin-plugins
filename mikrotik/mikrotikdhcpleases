@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+use Data::Dumper;
+use Net::SSH::Perl;
+
+$debug=0;
+$ip="123.456.789.0";
+$username="juzername";
+$password="password";
+$hostname="your.hostna.me";
+
+#=======================================================
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+  print "host_name $hostname\n";
+  print "graph_args --base 1000 -l 0 -r --lower-limit 0\n";
+  print "graph_title DHCP leases\n";
+  print "graph_vlabel number\n";
+  print "graph_category network\n";
+  print "graph_info This graph shows the number of active DHCP leases\n";
+  print "graph_scale no\n";
+  print "dhcp.label DHCP Leases\n";
+
+exit;  
+}
+
+
+
+
+
+$ssh = Net::SSH::Perl->new($ip) or die $!;
+$ssh->login($username, $password) or die $!;
+($stdout,$stderr,$exitcode) = $ssh->cmd("ip dhcp-server lease print without-paging terse where status=\"bound\"");
+
+print Dumper($stdout) if $debug;
+
+$numberofclients = () = $stdout =~ /status=bound/gi;
+
+print "num: $numberofclients\n" if $debug;
+
+print "dhcp.value $numberofclients\n";
