@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+print "host_name random 
+graph_title Mimovrste.com current visitors
+graph_vtitle Visitors
+graph_args --base 1000
+graph_category other
+visitors.label Visitors
+";
+
+  exit;
+}
+
+
+
+
+
+use LWP::Simple;
+
+$mm=get "https://www.mimovrste.com/";
+
+if ($mm=~/<span class="con-num"> (\d+) <\/span>/) {
+    $num=$1;
+    print "num.value $num\n";
+    
+    
+}
