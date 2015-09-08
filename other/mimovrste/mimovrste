@@ -24,7 +24,7 @@ $mm=get "https://www.mimovrste.com/";
 
 if ($mm=~/<span class="con-num"> (\d+) <\/span>/) {
     $num=$1;
-    print "num.value $num\n";
+    print "visitors.value $num\n";
     
     
 }
